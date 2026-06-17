@@ -19,20 +19,18 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // 🛠️ Verificamos si ya existe un administrador para no duplicarlo
-        if (!userRepository.existsByUsername("admin")) {
-            User admin = new User();
-            admin.setUsername("admin");
-            admin.setEmail("admin@ecoswap.com");
+        User admin = userRepository.findByUsername("admin").orElseGet(() -> {
+            User newAdmin = new User();
+            newAdmin.setUsername("admin");
+            newAdmin.setEmail("admin@ecoswap.com");
+            newAdmin.setRole("ADMIN");
+            return newAdmin;
+        });
 
-            // Encriptamos su contraseña por defecto
-            admin.setPassword(passwordEncoder.encode("AdminEco2026!"));
+        // Encriptamos la contraseña "Hola123?" y la guardamos
+        admin.setPassword(passwordEncoder.encode("Hola123?"));
 
-            // ⚠️ Le asignamos el rol estricto que espera tu SecurityConfig
-            admin.setRole("ADMIN");
-
-            userRepository.save(admin);
-            System.out.println("=== USUARIO ADMINISTRADOR CREADO POR DEFECTO ===");
-        }
+        userRepository.save(admin);
+        System.out.println("=== USUARIO ADMINISTRADOR CONFIGURADO CON CONTRASEÑA: Hola123? ===");
     }
 }

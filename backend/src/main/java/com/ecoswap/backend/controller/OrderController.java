@@ -7,6 +7,7 @@ import com.ecoswap.backend.entity.PaymentMethod;
 import com.ecoswap.backend.repository.OrderRepository;
 import com.ecoswap.backend.repository.UserRepository;
 import com.ecoswap.backend.repository.ProductRepository;
+import com.ecoswap.backend.repository.FavoriteRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +25,13 @@ public class OrderController {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final FavoriteRepository favoriteRepository;
 
-    public OrderController(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository) {
+    public OrderController(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository, FavoriteRepository favoriteRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.favoriteRepository = favoriteRepository;
     }
 
     @PostMapping
@@ -64,6 +67,9 @@ public class OrderController {
                     product.setActive(false);
                     product.setSold(true);
                     productRepository.save(product);
+
+                    // Borrar el producto de favoritos de todos los usuarios
+                    favoriteRepository.deleteByProductId(itemReq.getProductId());
                 }
             }
 

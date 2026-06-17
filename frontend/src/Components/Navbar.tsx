@@ -39,7 +39,7 @@ const Navbar = () => {
               <Link to="/favorites" className="hover:text-primary transition-colors">Favoritos</Link>
               <Link to="/my-orders" className="hover:text-primary transition-colors">Mis pedidos</Link>
               <Link to="/chats" className="hover:text-primary transition-colors">Mensajes</Link>
-              <Link to="/create-product" className="hover:text-primary transition-colors">Crear producto</Link>
+              <Link to="/create-product" className="hover:text-primary transition-colors">Publicar producto</Link>
               <Link to="/profile" className="hover:text-primary transition-colors">Mi Perfil</Link>
               <Link to="/cart" className="hover:text-primary transition-colors flex items-center gap-1.5">
                 🛒 Carrito

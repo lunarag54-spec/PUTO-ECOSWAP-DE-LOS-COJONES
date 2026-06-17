@@ -30,6 +30,7 @@ import Chats from './pages/Chats';
 
 
 import EditProduct from './pages/EditProduct';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 function App() {
   return (
@@ -50,19 +51,19 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
 
-                  <Route path="/create-product" element={<CreateProduct />} />
-                  <Route path="/my-products" element={<MyProducts />} />
-                  <Route path="/favorites" element={<Favorites />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/datos-entrega" element={<DatosEntrega />} />
-                  <Route path="/pago" element={<Pago />} />
-                  <Route path="/pedido-finalizado" element={<PedidoFinalizado />} />
-                  <Route path="/my-orders" element={<MyOrders />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/profile/:profileUsername" element={<Profile />} />
-                  <Route path="/chats" element={<Chats />} />
-                  <Route path="/edit-product/:id" element={<EditProduct />} />
+                  <Route path="/create-product" element={<ProtectedRoute><CreateProduct /></ProtectedRoute>} />
+                  <Route path="/my-products" element={<ProtectedRoute><MyProducts /></ProtectedRoute>} />
+                  <Route path="/favorites" element={<ProtectedRoute><Favorites /></ProtectedRoute>} />
+                  <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+                  <Route path="/datos-entrega" element={<ProtectedRoute><DatosEntrega /></ProtectedRoute>} />
+                  <Route path="/pago" element={<ProtectedRoute><Pago /></ProtectedRoute>} />
+                  <Route path="/pedido-finalizado" element={<ProtectedRoute><PedidoFinalizado /></ProtectedRoute>} />
+                  <Route path="/my-orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
+                  <Route path="/admin" element={<ProtectedRoute allowedRole="ADMIN"><AdminDashboard /></ProtectedRoute>} />
+                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                  <Route path="/profile/:profileUsername" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                  <Route path="/chats" element={<ProtectedRoute><Chats /></ProtectedRoute>} />
+                  <Route path="/edit-product/:id" element={<ProtectedRoute><EditProduct /></ProtectedRoute>} />
 
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
