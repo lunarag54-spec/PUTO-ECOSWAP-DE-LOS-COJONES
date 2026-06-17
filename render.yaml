@@ -1,0 +1,57 @@
+databases:
+  - name: ecoswap-db
+    databaseName: ecoswap
+    user: postgres
+    plan: free
+
+services:
+  # Backend: Java Spring Boot Web Service
+  - type: web
+    name: ecoswap-backend
+    env: java
+    plan: free
+    rootDir: backend
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: ecoswap-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: ecoswap-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: ecoswap-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: ecoswap-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: ecoswap-db
+          property: password
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+
+  # Frontend: React Vite Static Site
+  - type: web
+    name: ecoswap-frontend
+    env: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: ecoswap-backend
+          property: host

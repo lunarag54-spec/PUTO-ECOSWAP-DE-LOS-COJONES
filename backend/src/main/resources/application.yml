@@ -1,0 +1,27 @@
+server:
+  port: ${PORT:8081}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:ecoswap}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+  # Configuración para Render (evita problemas de CORS y recursos estáticos)
+  web:
+    resources:
+      static-locations: classpath:/static/
+  profiles:
+    active: prod
+
+jwt:
+  secret: ${JWT_SECRET:default_secret_key_must_be_at_least_32_characters_long_for_security}
+  expiration: 86400000
+
+# Perfil de producción
