@@ -35,13 +35,13 @@ api.interceptors.response.use(
       (error instanceof Error ? error.message : null) ||
       'Error desconocido en el servidor';
 
-    if (import.meta.env.DEV) {
-      console.error('[API Error]', {
-        url: axios.isAxiosError(error) ? error.config?.url : undefined,
-        status: axios.isAxiosError(error) ? error.response?.status : undefined,
-        message: errorMessage,
-      });
-    }
+    console.error('[API Error]', {
+      url: axios.isAxiosError(error) ? error.config?.url : undefined,
+      method: axios.isAxiosError(error) ? error.config?.method : undefined,
+      status: axios.isAxiosError(error) ? error.response?.status : undefined,
+      message: errorMessage,
+      details: axios.isAxiosError(error) ? error.response?.data : undefined,
+    });
 
     return Promise.reject(error);
   }

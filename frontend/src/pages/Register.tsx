@@ -48,9 +48,15 @@ const Register = () => {
       showToast('¡Cuenta creada con éxito!', 'success');
       navigate('/');
     } catch (error: unknown) {
-        const err = error as AxiosError<{ message?: string }>;
-        const message = err.response?.data?.message ||
-          (err.response?.status === 400 ? 'El usuario o correo ya existen' : 'Error al registrarse');
+        console.error('Error durante el registro:', error);
+        const err = error as AxiosError<{ message?: string; errors?: Record<string, string> }>;
+        let message = err.response?.data?.message;
+        if (!message && err.response?.data?.errors) {
+          message = Object.values(err.response.data.errors).join(', ');
+        }
+        if (!message) {
+          message = err.response?.status === 400 ? 'El usuario o correo ya existen o los datos son inválidos' : 'Error al registrarse';
+        }
         setSubmitError(message);
         showToast(message, 'error');
       }
