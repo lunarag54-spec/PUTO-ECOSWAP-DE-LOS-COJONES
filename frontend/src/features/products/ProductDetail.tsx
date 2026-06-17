@@ -85,7 +85,14 @@ const ProductDetail = () => {
 
           <div>
             <h1 className="text-4xl font-bold text-dark">{product.title}</h1>
-            <p className="text-3xl font-semibold text-primary mt-3">{product.price.toFixed(2)} €</p>
+            <div className="flex items-center gap-4 mt-3">
+              <p className="text-3xl font-semibold text-primary">{product.price.toFixed(2)} €</p>
+              {product.isSold && (
+                <span className="bg-red-100 text-red-700 font-bold px-4 py-1.5 rounded-2xl text-sm border border-red-300 uppercase">
+                  Vendido
+                </span>
+              )}
+            </div>
 
             <div className="flex gap-3 mt-6">
               <span className="px-5 py-2 bg-gray-100 rounded-3xl text-sm">{product.category}</span>
@@ -113,12 +120,21 @@ const ProductDetail = () => {
               {}
               {!isOwner && (
                 <>
-                  <button
-                    onClick={handleAddToCart}
-                    className="w-full bg-primary hover:bg-green-600 text-white py-5 rounded-3xl text-xl font-semibold transition"
-                  >
-                    🛒 Añadir al carrito
-                  </button>
+                  {product.isSold ? (
+                    <button
+                      disabled
+                      className="w-full bg-gray-400 text-white py-5 rounded-3xl text-xl font-semibold cursor-not-allowed"
+                    >
+                      🤝 Vendido
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleAddToCart}
+                      className="w-full bg-primary hover:bg-green-600 text-white py-5 rounded-3xl text-xl font-semibold transition"
+                    >
+                      🛒 Añadir al carrito
+                    </button>
+                  )}
                   <button
                     onClick={() => navigate(`/chats?user=${product.username}`)}
                     className="w-full bg-slate-900 hover:bg-slate-800 text-white py-5 rounded-3xl text-xl font-semibold transition flex items-center justify-center gap-2"

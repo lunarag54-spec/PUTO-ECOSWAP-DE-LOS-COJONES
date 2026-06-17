@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import api, { API_URL } from '../services/api';
 import { useToast } from '../context/ToastContext';
 import type { Product } from '../types';
 import { useForm } from 'react-hook-form';
@@ -28,6 +28,8 @@ const EditProduct = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<EditProductForm>({
     resolver: zodResolver(editProductSchema),
@@ -40,6 +42,7 @@ const EditProduct = () => {
         const res = await api.get(`/api/products/${id}`);
         const p = res.data;
         setProduct(p);
+        setPreview(p.imageUrl ? `${API_URL}${p.imageUrl}` : null);
         reset({
           title: p.title,
           description: p.description,
@@ -61,16 +64,19 @@ const EditProduct = () => {
   const onSubmit = async (data: EditProductForm) => {
     setSaving(true);
     try {
-      const request = {
-        title: data.title,
-        description: data.description,
-        price: parseFloat(data.price),
-        category: data.category,
-        condition: data.condition,
-      };
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', data.title);
+      formDataToSend.append('description', data.description);
+      formDataToSend.append('price', data.price);
+      formDataToSend.append('category', data.category);
+      formDataToSend.append('condition', data.condition);
 
-      await api.put(`/api/products/${id}`, request, {
-        headers: { 'Content-Type': 'application/json' }
+      if (image) {
+        formDataToSend.append('image', image);
+      }
+
+      await api.put(`/api/products/${id}`, formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
 
       showToast('Producto actualizado correctamente', 'success');
@@ -90,6 +96,28 @@ const EditProduct = () => {
       <h1 className="text-3xl font-bold mb-8">Editar Producto</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {preview && (
+          <div className="mb-6">
+            <p className="text-sm text-gray-500 mb-2 font-medium">Imagen del producto:</p>
+            <img src={preview} alt="Vista previa" className="w-full max-h-64 object-cover rounded-2xl shadow" />
+          </div>
+        )}
+
+        <div className="mb-6">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Cambiar imagen (opcional)</label>
+          <input 
+            type="file" 
+            accept="image/*" 
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setImage(file);
+                setPreview(URL.createObjectURL(file));
+              }
+            }} 
+            className="block w-full text-sm text-gray-500 file:mr-4 file:py-3 file:px-6 file:rounded-2xl file:border-0 file:text-sm file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700"
+          />
+        </div>
         <div>
           <input
             {...register('title')}

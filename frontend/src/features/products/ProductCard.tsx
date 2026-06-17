@@ -61,11 +61,19 @@ const ProductCard = ({ product }: { product: Product }) => {
             className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105"
           />
 
-          {isAuthenticated && (
+          {product.isSold && (
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
+              <span className="bg-red-600 text-white font-bold text-lg px-6 py-2 rounded-2xl shadow-lg uppercase tracking-wider">
+                Vendido
+              </span>
+            </div>
+          )}
+
+          {isAuthenticated && !product.isSold && (
             <button
               onClick={toggleFavorite}
               disabled={loading}
-              className="absolute top-4 right-4 bg-white/90 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 text-3xl w-10 h-10 flex items-center justify-center rounded-2xl shadow transition-all hover:scale-110 active:scale-95"
+              className="absolute top-4 right-4 bg-white/90 hover:bg-white dark:bg-gray-700 dark:hover:bg-gray-600 text-3xl z-20 w-10 h-10 flex items-center justify-center rounded-2xl shadow transition-all hover:scale-110 active:scale-95"
             >
               {isFavorite ? '❤️' : '♡'}
             </button>

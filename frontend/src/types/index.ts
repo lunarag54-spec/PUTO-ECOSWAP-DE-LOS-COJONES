@@ -8,4 +8,5 @@ export interface Product {
   imageUrl?: string;
   username: string;        
   createdAt: string;
+  isSold?: boolean;
 }

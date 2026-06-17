@@ -56,10 +56,29 @@ public class ProductController {
 
     
     
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<ProductResponse> update(
             @PathVariable Long id,
-            @Valid @RequestBody ProductRequest request) {
+            @RequestParam String title,
+            @RequestParam String description,
+            @RequestParam BigDecimal price,
+            @RequestParam String category,
+            @RequestParam String condition,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+
+        ProductRequest request = new ProductRequest();
+        request.setTitle(title);
+        request.setDescription(description);
+        request.setPrice(price);
+        request.setCategory(category);
+
+        try {
+            request.setCondition(Product.Condition.valueOf(condition.toUpperCase().trim()));
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Estado inválido: '" + condition + "'. Los valores permitidos son: NEW, LIKE_NEW, USED, DAMAGED, REFURBISHED");
+        }
+
+        request.setImage(image);
 
         ProductResponse response = productService.updateProduct(id, request);
         return ResponseEntity.ok(response);

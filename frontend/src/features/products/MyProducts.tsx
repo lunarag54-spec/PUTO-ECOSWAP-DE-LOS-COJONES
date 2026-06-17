@@ -63,17 +63,18 @@ const MyProducts = () => {
               <div key={product.id} className="relative">
                 <ProductCard product={product} />
                 
-                {}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    navigate(`/edit-product/${product.id}`);
-                  }}
-                  className="absolute bottom-4 left-4 bg-green-600 text-white px-4 py-2 rounded-2xl text-sm font-medium hover:bg-green-700 transition"
-                >
-                  ✏️ Editar
-                </button>
+                {!product.isSold && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate(`/edit-product/${product.id}`);
+                    }}
+                    className="absolute bottom-4 left-4 bg-green-600 text-white px-4 py-2 rounded-2xl text-sm font-medium hover:bg-green-700 transition"
+                  >
+                    ✏️ Editar
+                  </button>
+                )}
               </div>
             ))}
           </div>

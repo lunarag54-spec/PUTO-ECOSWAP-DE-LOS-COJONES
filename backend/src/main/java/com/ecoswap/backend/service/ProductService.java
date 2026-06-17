@@ -125,6 +125,7 @@ public class ProductService {
         response.setImageUrl(product.getImageUrl());
         response.setUsername(product.getUser().getUsername());
         response.setCreatedAt(product.getCreatedAt());
+        response.setSold(product.isSold());
         return response;
     }
 

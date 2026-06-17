@@ -17,4 +17,5 @@ public class ProductResponse {
     private String imageUrl;
     private String username;
     private LocalDateTime createdAt;
+    private boolean isSold;
 }
