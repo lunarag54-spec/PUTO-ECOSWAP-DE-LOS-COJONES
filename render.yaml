@@ -47,7 +47,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: ecoswap-backend
-          property: url
+        value: https://ecoswap-backend.onrender.com
