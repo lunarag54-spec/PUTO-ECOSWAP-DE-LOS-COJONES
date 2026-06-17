@@ -50,4 +50,4 @@ services:
         fromService:
           type: web
           name: ecoswap-backend
-          property: host
+          property: url
