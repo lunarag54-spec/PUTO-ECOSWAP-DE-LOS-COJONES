@@ -1,18 +1,15 @@
 databases:
   - name: ecoswap-db
     databaseName: ecoswap
-    user: postgres
     plan: free
 
 services:
-  # Backend: Java Spring Boot Web Service
+  # Backend: Java Spring Boot Web Service (via Docker)
   - type: web
     name: ecoswap-backend
-    env: java
+    env: docker
     plan: free
     rootDir: backend
-    buildCommand: ./mvnw clean package -DskipTests
-    startCommand: java -jar target/*.jar
     envVars:
       - key: DB_HOST
         fromDatabase:
