@@ -41,7 +41,7 @@ const Chats = () => {
   const [sendingMessage, setSendingMessage] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const pollIntervalRef = useRef<any>(null);
 
   // Retrieve URL parameter user (e.g. ?user=username)
   const targetUsername = searchParams.get('user');
