@@ -66,6 +66,40 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Order> orders = new ArrayList<>();
 
+    @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonIgnore
+    private List<Review> reviewsWritten = new ArrayList<>();
+
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonIgnore
+    private List<Review> reviewsReceived = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonIgnore
+    private List<Message> messagesSent = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonIgnore
+    private List<Message> messagesReceived = new ArrayList<>();
+
+    @OneToMany(mappedBy = "seller")
+    @Builder.Default
+    @JsonIgnore
+    private List<OrderItem> itemsSold = new ArrayList<>();
+
+    @PreRemove
+    private void preRemove() {
+        if (itemsSold != null) {
+            for (OrderItem item : itemsSold) {
+                item.setSeller(null);
+            }
+        }
+    }
+
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
