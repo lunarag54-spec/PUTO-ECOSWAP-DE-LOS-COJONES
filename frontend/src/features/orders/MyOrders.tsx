@@ -137,12 +137,12 @@ const MyOrders = () => {
       </tr>
     `).join('');
 
-    const invoiceHtml = \`
+    const invoiceHtml = `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
-        <title>Recibo EcoSwap - Pedido #\${order.id}</title>
+        <title>Recibo EcoSwap - Pedido #${order.id}</title>
         <style>
           body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -248,17 +248,17 @@ const MyOrders = () => {
         <div class="details-grid">
           <div>
             <div class="section-title">Detalles del Pedido</div>
-            <p><strong>Pedido ID:</strong> #EC-\${order.id}</p>
-            <p><strong>Fecha:</strong> \${order.orderDate ? new Date(order.orderDate).toLocaleDateString('es-ES') : 'N/A'}</p>
-            <p><strong>Método de Pago:</strong> \${order.paymentMethod}</p>
+            <p><strong>Pedido ID:</strong> #EC-${order.id}</p>
+            <p><strong>Fecha:</strong> ${order.orderDate ? new Date(order.orderDate).toLocaleDateString('es-ES') : 'N/A'}</p>
+            <p><strong>Método de Pago:</strong> ${order.paymentMethod}</p>
             <p><strong>Estado:</strong> Entregado</p>
           </div>
           <div>
             <div class="section-title">Dirección de Entrega</div>
-            <p><strong>Nombre:</strong> \${order.fullName || 'N/A'}</p>
-            <p><strong>Dirección:</strong> \${order.address || 'N/A'}</p>
-            <p><strong>Ciudad/CP:</strong> \${order.city || 'N/A'} (\${order.postalCode || 'N/A'})</p>
-            <p><strong>Teléfono:</strong> \${order.phone || 'N/A'}</p>
+            <p><strong>Nombre:</strong> ${order.fullName || 'N/A'}</p>
+            <p><strong>Dirección:</strong> ${order.address || 'N/A'}</p>
+            <p><strong>Ciudad/CP:</strong> ${order.city || 'N/A'} (${order.postalCode || 'N/A'})</p>
+            <p><strong>Teléfono:</strong> ${order.phone || 'N/A'}</p>
           </div>
         </div>
 
@@ -271,14 +271,14 @@ const MyOrders = () => {
             </tr>
           </thead>
           <tbody>
-            \${itemsRows}
+            ${itemsRows}
           </tbody>
         </table>
 
         <div class="total-box">
           <div class="total-row">
             <span>Subtotal:</span>
-            <span>\${order.total.toFixed(2)} €</span>
+            <span>${order.total.toFixed(2)} €</span>
           </div>
           <div class="total-row">
             <span>Envío:</span>
@@ -286,7 +286,7 @@ const MyOrders = () => {
           </div>
           <div class="total-row grand-total" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #f1f5f9;">
             <span>Total:</span>
-            <span>\${order.total.toFixed(2)} €</span>
+            <span>${order.total.toFixed(2)} €</span>
           </div>
         </div>
 
@@ -306,7 +306,7 @@ const MyOrders = () => {
         </script>
       </body>
       </html>
-    \`;
+    `;
 
     printWindow.document.open();
     printWindow.document.write(invoiceHtml);
